@@ -1,7 +1,20 @@
+function ViewASetting()
+{
+    echo “Enter variable name:”
+    read answer
+    value=${DictionaryOfConfigures[$answer]}
+    if [[ -z "$value" ]] ; then
+        echo "Variable does not exits."
+    else
+        echo "$answer=$value"
+        echo "Requested setting displayed above."
+    fi
+}
+
 declare -A DictionaryOfConfigures
 filename='config.txt'
 while read line;do
-    array=(${line//=\ })
+    array=(${line//=/ })
     key=${array[0]}
     value=${array[1]}
     DictionaryOfConfigures[$key]=$value
@@ -23,6 +36,7 @@ do
     case $answer in
         Q|q) echo "Quit program.";exit;;
           4) echo; cat config.txt;;
+          3) echo; ViewASetting;;
           *) echo "Invalid option";;
     esac
 done
