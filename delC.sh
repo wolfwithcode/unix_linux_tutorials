@@ -3,7 +3,7 @@ function deleteAFile()
   file=$1
   #echo "delete file $file"
   echo "Displaying first 10 lines of $file:"
-  echo $(cat $file | head -10)
+  cat $file | head -10
   echo -e "Delete file $file? (y/n): \c"
   read answer
   case $answer in
@@ -14,15 +14,19 @@ function deleteAFile()
   return
 }
 numberOfArguments=$#
-echo "the number of arguments: $numberOfArguments"
+#echo "the number of arguments: $numberOfArguments"
+echo "This script removes C files which you no longer want to keep."
+echo "Here are the C file(s) under the current directory:"
 if [ $numberOfArguments -eq 0 ]; then
- echo "empty argument"
+ #echo "empty argument"
  numberOfFileC=$(find . -name '*.c'|wc -l)
- echo "number of file C $numberOfFileC"
+ #echo "number of file C $numberOfFileC"
  if [ $numberOfFileC -eq 0 ]; then
-  echo "No C files found"
+  echo "No C files found."
  else
-  echo "Have C files"
+  #echo "Have C files"
+  echo $(ls *.c)
+  echo
   cFiles=$(ls *.c)
   #echo "cFiles $cFiles"
   listOfFileC=(${cFiles//\n/ })
@@ -33,16 +37,17 @@ if [ $numberOfArguments -eq 0 ]; then
   done
  fi
 else
-  echo "have arguments"
-  echo "the complete set of arguments is: $*"
+  #echo "have arguments"
+  #echo "the complete set of arguments is: $*"
   listOfFileC=("$@")
+  echo "$@"
   for file in "${listOfFileC[@]}"
   do
     if [ -f $file ] ; then
-        echo "File $file exists"
+        echo -e "\nFile $file exists"
         deleteAFile $file
     else
-        echo "File $file does not exist."
+        echo -e "\nFile $file does not exist."
     fi
   done
 fi
