@@ -7,7 +7,7 @@ function deleteAFile()
   echo -e "Delete file $file? (y/n): \c"
   read answer
   case $answer in
-       Y|y) echo -e "File $file deleted.";;
+       Y|y) rm $file;echo -e "File $file deleted.";;
        N|n) echo -e "File $file NOT deleted.";;
          *) echo "Invalid option";;
   esac
@@ -19,7 +19,8 @@ echo "This script removes C files which you no longer want to keep."
 echo "Here are the C file(s) under the current directory:"
 if [ $numberOfArguments -eq 0 ]; then
  #echo "empty argument"
- numberOfFileC=$(find . -name '*.c'|wc -l)
+ #numberOfFileC=$(find . -name '*.c'|wc -l)
+ numberOfFileC=$(find . -maxdepth 1 -name '*.c'|wc -l)
  #echo "number of file C $numberOfFileC"
  if [ $numberOfFileC -eq 0 ]; then
   echo "No C files found."
@@ -30,7 +31,7 @@ if [ $numberOfArguments -eq 0 ]; then
   cFiles=$(ls *.c)
   #echo "cFiles $cFiles"
   listOfFileC=(${cFiles//\n/ })
-  inputUser=n
+  #inputUser=n
   for file in "${listOfFileC[@]}"
   do
     deleteAFile $file
