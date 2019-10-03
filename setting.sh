@@ -62,10 +62,32 @@ function  funcDeleteASetting()
 
 function  funcAddASetting()
 {
-  echo -e "\n Enter setting (format: ABCD=abcd): \c"
-  read answer
-  
-  return
+    flag=y
+    while [ $flag = y ]
+    do
+        echo -e "\n Enter setting (format: ABCD=abcd): \c"
+        read answer
+		numberOfEqualSign=$(echo $answer | tr -cd '=' | wc -c)
+		if [[ $numberOfEqualSign != 1 ]] ; then
+			echo "Invalid setting"
+		# elif [[ $numberOfEqualSign > 1 ]] ; then
+			# echo "Invalid setting"
+		else
+			echo "Valid setting"
+			
+		fi
+        # if [ $(expr index $answer '=' ) = 0 ] ; then
+            # echo "Invalid setting"
+        # else
+            # echo "pa"
+        # fi
+		#$(expr index $stringZ '=')
+        # if [[ ${expr index $answer '=' } = 0 ]] ; then
+        # else
+        # fi
+        
+    done
+    return
 }
 
 filename='config.txt'
@@ -81,8 +103,8 @@ done < $filename
 # echo ${!DictionaryOfConfigures[@]}
 funcPrintDictionary
 
-continue=y
-while [ $continue = y ]
+flag=y
+while [ $flag = y ]
 do
     echo -e "\n *** MENU ***"
     echo -e "\n 1. Add a Setting"
