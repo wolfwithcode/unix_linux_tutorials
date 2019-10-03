@@ -67,21 +67,32 @@ function  funcAddASetting()
     do
         echo -e "\n Enter setting (format: ABCD=abcd): \c"
         read answer
-		numberOfEqualSign=$(echo $answer | tr -cd '=' | wc -c)
-		if [[ $numberOfEqualSign != 1 ]] ; then
-			echo "Invalid setting"
-		# elif [[ $numberOfEqualSign > 1 ]] ; then
-			# echo "Invalid setting"
-		else
-			echo "Valid setting"
-			
-		fi
+        numberOfEqualSign=$(echo $answer | tr -cd '=' | wc -c)
+        if [[ $numberOfEqualSign != 1 ]] ; then
+            echo "Invalid setting"
+        # elif [[ $numberOfEqualSign > 1 ]] ; then
+            # echo "Invalid setting"
+        else
+            echo "Valid setting"
+			if [ ${answer:0:1} = '=' ] ; then
+				echo "The variable name of the setting is: "
+				echo "The variable value of the setting is: $(echo $answer | tr -d '=')"
+				echo "Invalid valid"
+			elif [ ${answer:(-1)} = '=' ] ; then
+				echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
+				echo "The variable value of the setting is: "
+				echo "Invalid valid 2"
+			else
+				echo "pa"
+			fi
+            
+        fi
         # if [ $(expr index $answer '=' ) = 0 ] ; then
             # echo "Invalid setting"
         # else
             # echo "pa"
         # fi
-		#$(expr index $stringZ '=')
+        #$(expr index $stringZ '=')
         # if [[ ${expr index $answer '=' } = 0 ]] ; then
         # else
         # fi
