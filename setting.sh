@@ -62,8 +62,8 @@ function  funcDeleteASetting()
 
 function  funcAddASetting()
 {
-    flag=y
-    while [ $flag = y ]
+    flag1=y
+    while [ $flag1 = y ]
     do
         echo -e "\n Enter setting (format: ABCD=abcd): \c"
         read answer
@@ -82,8 +82,18 @@ function  funcAddASetting()
 				echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
 				echo "The variable value of the setting is: "
 				echo "Invalid valid 2"
+			#elif [[ ]]
 			else
 				echo "pa"
+				array=(${answer//=/ })
+				echo "The variable name of the setting is: ${array[0]} "
+				echo "The variable value of the setting is: ${array[1]} "
+				if [[ ${answer:0:1} == [0-9] ]]; then
+					echo "Invalid setting. The first character of a variable name cannot be a digit."
+				else
+					flag1=n
+				fi
+				
 			fi
             
         fi
