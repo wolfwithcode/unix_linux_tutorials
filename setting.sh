@@ -74,27 +74,33 @@ function  funcAddASetting()
             # echo "Invalid setting"
         else
             echo "Valid setting"
-			if [ ${answer:0:1} = '=' ] ; then
-				echo "The variable name of the setting is: "
-				echo "The variable value of the setting is: $(echo $answer | tr -d '=')"
-				echo "Invalid valid"
-			elif [ ${answer:(-1)} = '=' ] ; then
-				echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
-				echo "The variable value of the setting is: "
-				echo "Invalid valid 2"
-			#elif [[ ]]
-			else
-				echo "pa"
-				array=(${answer//=/ })
-				echo "The variable name of the setting is: ${array[0]} "
-				echo "The variable value of the setting is: ${array[1]} "
-				if [[ ${answer:0:1} == [0-9] ]]; then
-					echo "Invalid setting. The first character of a variable name cannot be a digit."
-				else
-					flag1=n
-				fi
-				
-			fi
+            if [ ${answer:0:1} = '=' ] ; then
+                echo "The variable name of the setting is: "
+                echo "The variable value of the setting is: $(echo $answer | tr -d '=')"
+                echo "Invalid valid"
+            elif [ ${answer:(-1)} = '=' ] ; then
+                echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
+                echo "The variable value of the setting is: "
+                echo "Invalid valid 2"
+            #elif [[ ]]
+            else
+                echo "pa"
+                array=(${answer//=/ })
+                key=${array[0]}
+				oldValue=${DictionaryOfConfigures[$key]}
+                value=${array[1]}
+                echo "The variable name of the setting is: $key "
+                echo "The variable value of the setting is: $value "
+				if [[ -n "$oldValue" ]] ; then
+					echo "Variable exists. Changing the values of existing variables is not allowed."
+                elif [[ ${answer:0:1} == [0-9] ]]; then
+                    echo "Invalid setting. The first character of a variable name cannot be a digit."
+                else
+                    flag1=n
+					DictionaryOfConfigures[$key]=$value
+                fi
+                
+            fi
             
         fi
         # if [ $(expr index $answer '=' ) = 0 ] ; then
