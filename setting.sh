@@ -17,10 +17,19 @@ function funcPrintDictionary() {
   done
 }
 
+function funcWriteDictionaryToFile() {
+  echo "Write to file config.txt"
+  echo -n > config.txt
+  for key in "${!DictionaryOfConfigures[@]}"; do
+    echo "$key=${DictionaryOfConfigures[$key]}" >> config.txt
+  done
+}
+
 function funcViewASetting()
 {
-    echo -e "Enter variable name: \c"
-    read answer
+    # echo -e "Enter variable name: \c"
+    # read answer
+    read -p "Enter variable name: " answer
     value=${DictionaryOfConfigures[$answer]}
     if [[ -z "$value" ]] ; then
         echo "Variable does not exits."
@@ -32,21 +41,21 @@ function funcViewASetting()
 
 function  funcDeleteASetting()
 {
-  echo -e "\n Enter variable name: \c"
-  read answer
+  # echo -e "\n Enter variable name: \c"
+  # read answer
+  read -p "Enter variable name: " answer
   value=${DictionaryOfConfigures[$answer]}
   if [[ -z "$value" ]] ; then
     echo "Variable does not exits."
   else
     echo "$answer=$value"
-    echo -e "\n Delete this setting (y/n)?: \c"
-    read choice
+    # echo -e "\n Delete this setting (y/n)?: \c"
+    # read choice
+    read -p "Delete this setting (y/n)?: " choice
     case $choice in
       Y|y)
           echo -e "\n Delete variable $answer"
           unset DictionaryOfConfigures[$answer]
-          # echo ${DictionaryOfConfigures[@]}
-          # echo ${!DictionaryOfConfigures[@]}
           funcPrintDictionary
           ;;
       N|n)
@@ -62,12 +71,11 @@ function  funcDeleteASetting()
 
 function  funcAddASetting()
 {
-    # flag1=y
-    # while [ $flag1 = y ]
     while true
     do
-        echo -e "\n Enter setting (format: ABCD=abcd): \c"
-        read answer
+        # echo -e "\n Enter setting (format: ABCD=abcd): \c"
+        # read answer
+        read -p "Enter setting (format: ABCD=abcd): "  answer
         numberOfEqualSign=$(echo $answer | tr -cd '=' | wc -c)
         if [[ -z $answer ]] ; then
             echo "New setting not entered";
@@ -75,7 +83,7 @@ function  funcAddASetting()
             echo "Invalid setting"
         else
             # echo "Valid setting"
-            numberOfSpace=$(echo $answer | tr -cd "[[:space]]" | wc -c)
+            numberOfSpace=$(echo $answer | tr -cd " " | wc -c)
             if [[ $numberOfSpace > 1 ]]; then
                 echo "Invalid valid. Space is not allowed !"
             elif [ ${answer:0:1} = '=' ] ; then
@@ -86,14 +94,12 @@ function  funcAddASetting()
                 echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
                 echo "The variable value of the setting is: "
                 echo "Invalid valid 2"
-            #elif [[ ]]
             else
-                # echo "pa"
                 array=(${answer//=/ })
                 key=${array[0]}
 				        oldValue=${DictionaryOfConfigures[$key]}
                 value=${array[1]}
-                echo "The variable name of the setting is: $key "
+                echo "The variableconfig.txt name of the setting is: $key "
                 echo "The variable value of the setting is: $value "
 				        if [[ -n "$oldValue" ]] ; then
 					             echo "Variable exists. Changing the values of existing variables is not allowed."
@@ -101,7 +107,6 @@ function  funcAddASetting()
                 elif [[ ${answer:0:1} == [0-9] ]]; then
                     echo "Invalid setting. The first character of a variable name cannot be a digit."
                 else
-                    # flag1=n
 					          DictionaryOfConfigures[$key]=$value
                     break
                 fi
@@ -125,8 +130,6 @@ done < $filename
 
 funcPrintDictionary
 
-# flag=y
-# while [ $flag = y ]
 while true
 do
     echo -e "\n *** MENU ***"
@@ -134,16 +137,17 @@ do
     echo -e "\n 2. Delete a Setting"
     echo -e "\n 3. View a Setting"
     echo -e "\n 4. View All Settings"
-    echo -e "\n Q   – Quit"
-    echo -e "\n CHOICE: \c"
-    read answer
-    case $answer in
-        Q|q) echo "Quit program.";exit;;
-          # 4) echo; cat config.txt ;;
+    echo -e "\n Q – Quit"
+    # echo -e "\n CHOICE: \c"config.txt
+    # read answer
+    read -p "CHOICE: " CHOICE
+    # case $answer in
+    case $CHOICE in
+        Q|q) echo "Quit program."; funcWriteDictionaryToFile ;exit;;
           4) echo; funcPrintDictionary ;;
           3) echo; funcViewASetting ;;
           2) echo; funcDeleteASetting ;;
           1) echo; funcAddASetting ;;
-          *) echo "Invalid option";;
+          *) echo "Invalid option"; funcWriteDictionaryToFile ;;
     esac
 done
