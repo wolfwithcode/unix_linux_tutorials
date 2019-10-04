@@ -62,57 +62,53 @@ function  funcDeleteASetting()
 
 function  funcAddASetting()
 {
-    flag1=y
-    while [ $flag1 = y ]
+    # flag1=y
+    # while [ $flag1 = y ]
+    while true
     do
         echo -e "\n Enter setting (format: ABCD=abcd): \c"
         read answer
         numberOfEqualSign=$(echo $answer | tr -cd '=' | wc -c)
-        if [[ $numberOfEqualSign != 1 ]] ; then
+        if [[ -z $answer ]] ; then
+            echo "New setting not entered";
+        elif [[ $numberOfEqualSign != 1 ]] ; then
             echo "Invalid setting"
-        # elif [[ $numberOfEqualSign > 1 ]] ; then
-            # echo "Invalid setting"
         else
-            echo "Valid setting"
-            if [ ${answer:0:1} = '=' ] ; then
+            # echo "Valid setting"
+            numberOfSpace=$(echo $answer | tr -cd "[[:space]]" | wc -c)
+            if [[ $numberOfSpace > 1 ]]; then
+                echo "Invalid valid. Space is not allowed !"
+            elif [ ${answer:0:1} = '=' ] ; then
                 echo "The variable name of the setting is: "
                 echo "The variable value of the setting is: $(echo $answer | tr -d '=')"
-                echo "Invalid valid"
+                echo "Invalid valid 1"
             elif [ ${answer:(-1)} = '=' ] ; then
                 echo "The variable name of the setting is: $(echo $answer | tr -d '=')"
                 echo "The variable value of the setting is: "
                 echo "Invalid valid 2"
             #elif [[ ]]
             else
-                echo "pa"
+                # echo "pa"
                 array=(${answer//=/ })
                 key=${array[0]}
-				oldValue=${DictionaryOfConfigures[$key]}
+				        oldValue=${DictionaryOfConfigures[$key]}
                 value=${array[1]}
                 echo "The variable name of the setting is: $key "
                 echo "The variable value of the setting is: $value "
-				if [[ -n "$oldValue" ]] ; then
-					echo "Variable exists. Changing the values of existing variables is not allowed."
+				        if [[ -n "$oldValue" ]] ; then
+					             echo "Variable exists. Changing the values of existing variables is not allowed."
+                       break
                 elif [[ ${answer:0:1} == [0-9] ]]; then
                     echo "Invalid setting. The first character of a variable name cannot be a digit."
                 else
-                    flag1=n
-					DictionaryOfConfigures[$key]=$value
+                    # flag1=n
+					          DictionaryOfConfigures[$key]=$value
+                    break
                 fi
-                
+
             fi
-            
+
         fi
-        # if [ $(expr index $answer '=' ) = 0 ] ; then
-            # echo "Invalid setting"
-        # else
-            # echo "pa"
-        # fi
-        #$(expr index $stringZ '=')
-        # if [[ ${expr index $answer '=' } = 0 ]] ; then
-        # else
-        # fi
-        
     done
     return
 }
@@ -126,12 +122,12 @@ while read line;do
     value=${array[1]}
     DictionaryOfConfigures[$key]=$value
 done < $filename
-# echo ${DictionaryOfConfigures[@]}
-# echo ${!DictionaryOfConfigures[@]}
+
 funcPrintDictionary
 
-flag=y
-while [ $flag = y ]
+# flag=y
+# while [ $flag = y ]
+while true
 do
     echo -e "\n *** MENU ***"
     echo -e "\n 1. Add a Setting"
