@@ -146,7 +146,7 @@ do
         Q|q) echo "Quit program."; funcWriteDictionaryToFile ;exit;;
           4) echo; funcPrintDictionary ;;
           3) echo; funcViewASetting ;;
-          2) echo; funcDeleteASetting ;;
+          2) echo; funcDeleteASetting ;;involvement
           1) echo; funcAddASetting ;;
           *) echo "Invalid option"; funcWriteDictionaryToFile ;;
     esac
